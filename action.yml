@@ -1,0 +1,12 @@
+name: 'MrMat Conditional Release Action'
+description: 'A GitHub action to perform a conditional project release the way I like it'
+inputs:
+    version:
+        description: 'The version to release, typically passed as the value of an environment variable'
+        required: true
+    title:
+        description: 'The release title'
+        required: true
+runs:
+    using: 'node16'
+    main: 'index.js'
