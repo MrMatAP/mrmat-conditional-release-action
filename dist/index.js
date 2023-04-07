@@ -9804,7 +9804,7 @@ async function run() {
     const COMMIT = process.env.GITHUB_SHA
     const now = (new Date()).toISOString()
 
-    const token = core.getInput(process.env.GITHUB_TOKEN)
+    const token = process.env.GITHUB_TOKEN
     const octokit = github.getOctokit(token)
 
     //
