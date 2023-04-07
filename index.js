@@ -19,8 +19,12 @@ async function run() {
     //
     // Get identity information about the tagger
 
-    const { data: user } = octokit.rest.user.get()
-    core.info('User fetched: ' + user)
+    const response = await octokit.request('GET /user', {
+        headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+        }
+    })
+    core.info(response)
 
 }
 
