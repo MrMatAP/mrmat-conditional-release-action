@@ -17,7 +17,7 @@ try {
     //
     // Get identity information about the tagger
 
-    const { data: user } = await octokit.rest.user()
+    const { data: user } = octokit.rest.user()
     core.info('User fetched: ' + user)
 
     //
