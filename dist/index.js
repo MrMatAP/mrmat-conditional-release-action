@@ -9817,7 +9817,8 @@ async function run() {
             'X-GitHub-Api-Version': '2022-11-28'
         }
     })
-    core.info(`Login: ${response.data.login}`)
+    core.info(`User Login: ${response.data.login}`)
+    core.info(`User Email: ${response.data.email}`)
 
 }
 
