@@ -8,6 +8,7 @@ async function run() {
     const version = core.getInput('version')
     const title = core.getInput('title')
     const token = core.getInput('token')
+    const actor = process.env.GITHUB_ACTOR
     const VERSION = process.env.MRMAT_VERSION
     const OWNER = process.env.GITHUB_REPOSITORY_OWNER
     const REPOSITORY = process.env.GITHUB_REPOSITORY.split('/')[1]
@@ -19,7 +20,8 @@ async function run() {
     //
     // Get identity information about the tagger
 
-    const response = await octokit.request('GET /user', {
+    const response = await octokit.request('GET /users/{username}', {
+        username: actor,
         headers: {
             'X-GitHub-Api-Version': '2022-11-28'
         }
