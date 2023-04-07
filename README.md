@@ -4,9 +4,13 @@ A GitHub action to perform a conditional project release the way I like it
 
 ## Inputs
 
-### env_version
+### token
 
-The environment variable holding the version, used for the tag and release object
+**Required** The token to use for authenticating to the GitHub API
+
+### version
+
+**Required** The version to release
 
 ### title
 
