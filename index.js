@@ -1,10 +1,10 @@
-const core = require('@actions/core')
 const github = require('@actions/github')
+const core = require('@actions/core')
 
-try {
+async function run() {
     //
     // Initialise
-    core.startGroup('MrMat :: Conditional Release')
+
     const version = core.getInput('version')
     const title = core.getInput('title')
     const VERSION = process.env.MRMAT_VERSION
@@ -12,13 +12,21 @@ try {
     const REPOSITORY = process.env.GITHUB_REPOSITORY.split('/')[1]
     const COMMIT = process.env.GITHUB_SHA
     const now = (new Date()).toISOString()
-    const octokit = github.getOctokit(token = process.env.GITHUB_TOKEN)
+
+    const token = core.getInput(process.env.GITHUB_TOKEN)
+    const octokit = github.getOctokit(token)
 
     //
     // Get identity information about the tagger
 
-    const { data: user } = octokit.rest.user()
+    const { data: user } = octokit.rest.user.get()
     core.info('User fetched: ' + user)
+
+}
+
+try {
+    core.startGroup('MrMat :: Conditional Release')
+    run()
 
     //
     // Create a tag
