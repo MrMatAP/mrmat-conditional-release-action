@@ -12,7 +12,7 @@ try {
     const REPOSITORY = process.env.GITHUB_REPOSITORY.split('/')[1]
     const COMMIT = process.env.GITHUB_SHA
     const now = (new Date()).toISOString()
-    const octokit = github.getOctokit(process.env.GITHUB_TOKEN)
+    const octokit = github.getOctokit(token = process.env.GITHUB_TOKEN)
 
     //
     // Get identity information about the tagger
