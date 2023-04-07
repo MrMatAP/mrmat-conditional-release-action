@@ -26,7 +26,7 @@ async function run() {
             'X-GitHub-Api-Version': '2022-11-28'
         }
     })
-    core.info(response)
+    core.info(`Login: ${response.login}`)
 
 }
 
