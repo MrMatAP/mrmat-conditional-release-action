@@ -74,6 +74,7 @@ jobs:
         git commit -am "Release ${MRMAT_VERSION}"
         git tag -am "Release v${MRMAT_VERSION}" "${MRMAT_VERSION}"
         git push --follow-tags && true
+        echo "foo"
         GH_TOKEN=$GITHUB_TOKEN gh api \
           --method POST \
           -H "Accept: application/vnd.github+json" \
