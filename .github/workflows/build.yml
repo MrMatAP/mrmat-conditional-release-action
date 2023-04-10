@@ -80,7 +80,7 @@ jobs:
           -H "X-GitHub-Api-Version: 2022-11-28" \
           /repos/${GITHUB_REPOSITORY}/releases \
           -f tag_name="${MRMAT_VERSION}" \
-          -f target_commitish='HEAD' \
+          -f target_commitish=$(git rev-parse HEAD) \
           -f name="v${MRMAT_VERSION}" \
           -f body="Release ${MRMAT_VERSION}" \
           -F draft=false \
