@@ -60,11 +60,11 @@ jobs:
       run: |
         npm ci
         npm test
-        npm build
 
     - name: Conditional Release
       if: (github.event.pull_request.merged == true && github.base_ref == 'main')
       run: |
+        npm run build
         git add dist
         git commit -am "Release ${MRMAT_VERSION}"
         git tag -am "Release v${MRMAT_VERSION}"
