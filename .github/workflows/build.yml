@@ -37,7 +37,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      metadata: write
       packages: write
     steps:
 
