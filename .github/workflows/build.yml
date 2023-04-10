@@ -1,0 +1,83 @@
+#
+# How to build this
+
+name: Build
+
+#
+# Operational Variables
+
+env:
+  MAJOR: 0
+  MINOR: 0
+  PYTHON_VERSION: 3.11.0
+
+#
+# Establish when the workflow is run
+# We do build on every push except when we push onto main (which we ought to be subject to branch protection)
+# We do build whenever a PR onto main is closed (see on) and the code is actually merged (see release job if)
+# Why is that okay?
+# Since we're making a PR, we know from the previous workflow run on push that the repo is okay and the PR
+# shows that to us. A PR itself doesn't cause a build, except when it is closed and the changes were merged.
+
+on:
+  push:
+    branches-ignore:
+    - main
+  pull_request_target:
+    branches:
+    - main
+    types:
+    - closed
+
+#
+# Workflow
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout out our code
+      uses: actions/checkout@v3
+
+    - name: Calculate Build Context
+      run: |
+        MRMAT_VERSION="${MAJOR}.${MINOR}.${GITHUB_RUN_NUMBER}"
+        if [ "$GITHUB_EVENT_NAME" == 'pull_request_target' -a "$GITHUB_BASE_REF" == 'main' ]; then
+          MRMAT_IS_RELEASE=true
+          echo "::warning ::Building release ${MRMAT_VERSION}"
+          echo "MRMAT_IS_RELEASE=true" >> $GITHUB_ENV
+        else
+          MRMAT_VERSION="${MRMAT_VERSION}.dev0"
+          echo "::warning ::Building version ${MRMAT_VERSION}"
+        fi
+        echo "MRMAT_VERSION=${MRMAT_VERSION}" >> $GITHUB_ENV
+
+    - name: Setup Node
+      uses: actions/setup-node@v2
+
+    - name: Build
+      run: |
+        npm ci
+        npm test
+
+    - name: Conditional Release
+      if: (github.event.pull_request.merged == true && github.base_ref == 'main')
+      run: |
+        npm run build
+        git add dist
+        git commit -am "Release ${MRMAT_VERSION}"
+        git tag -am "Release v${MRMAT_VERSION}"
+        git push --follow-tags
+        gh api \
+          --method POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          /repos/${GITHUB_REPOSITORY}/releases \
+          -f tag_name="v${MRMAT_VERSION}" \
+          -f target_commitish='HEAD' \
+          -f name="v${MRMAT_VERSION}" \
+          -f body="Release ${MRMAT_VERSION}" \
+          -F draft=false \
+          -F prerelease=false \
+          -F generate_release_notes=false
