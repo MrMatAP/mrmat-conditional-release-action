@@ -71,10 +71,9 @@ jobs:
         git config --global user.name "$GITHUB_ACTOR"
         NODE_OPTIONS=--openssl-legacy-provider npm run build
         git add -f dist
-        git commit -am "Release ${MRMAT_VERSION}"
+        git commit -am "Release ${MRMAT_VERSION}" || true
         git tag -am "Release v${MRMAT_VERSION}" "${MRMAT_VERSION}"
-        git push --follow-tags && true
-        echo "foo"
+        git push --follow-tags
         GH_TOKEN=$GITHUB_TOKEN gh api \
           --method POST \
           -H "Accept: application/vnd.github+json" \
