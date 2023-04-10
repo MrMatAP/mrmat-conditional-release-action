@@ -69,14 +69,14 @@ jobs:
         NODE_OPTIONS=--openssl-legacy-provider npm run build
         git add -f dist
         git commit -am "Release ${MRMAT_VERSION}"
-        git tag -am "Release v${MRMAT_VERSION}"
+        git tag -am "Release v${MRMAT_VERSION}" "${MRMAT_VERSION}"
         git push --follow-tags
         gh api \
           --method POST \
           -H "Accept: application/vnd.github+json" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
           /repos/${GITHUB_REPOSITORY}/releases \
-          -f tag_name="v${MRMAT_VERSION}" \
+          -f tag_name="${MRMAT_VERSION}" \
           -f target_commitish='HEAD' \
           -f name="v${MRMAT_VERSION}" \
           -f body="Release ${MRMAT_VERSION}" \
