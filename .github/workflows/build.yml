@@ -64,6 +64,8 @@ jobs:
     - name: Conditional Release
       if: (github.event.pull_request.merged == true && github.base_ref == 'main')
       run: |
+        git config --global user.email "mrmat@mrmat.org"
+        git config --global user.name "$GITHUB_ACTOR"
         NODE_OPTIONS=--openssl-legacy-provider npm run build
         git add -f dist
         git commit -am "Release ${MRMAT_VERSION}"
