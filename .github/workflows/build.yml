@@ -35,6 +35,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      metadata: write
+      packages: write
     steps:
 
     - name: Checkout out our code
